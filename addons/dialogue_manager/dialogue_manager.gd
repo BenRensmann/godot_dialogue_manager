@@ -189,7 +189,7 @@ func get_line(resource: DialogueResource, key: String, extra_game_states: Array)
 	if not resource.lines.has(key):
 		assert(false, DMConstants.translate(&"errors.key_not_found").format({ key = key }))
 
-	var data: Dictionary = resource.lines.get(key)
+	var data: Dictionary = resource.lines.get(key).duplicate(true)
 
 	# If next_id is an expression we need to resolve it.
 	if data.has(&"next_id_expression"):
