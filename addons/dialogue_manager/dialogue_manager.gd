@@ -1491,6 +1491,8 @@ func _thing_has_method(thing, method: String, args: Array) -> bool:
 	if thing.has_method(method):
 		return true
 
+	if thing is Script:
+		thing = thing.new()
 	if thing.get_script() and thing.get_script().resource_path.ends_with(".cs"):
 		# If we get this far then the method might be a C# method with a Task return type
 		return _get_dotnet_dialogue_manager().ThingHasMethod(thing, method, args)
@@ -1574,6 +1576,8 @@ func _resolve_thing_method(thing, method: String, args: Array):
 		return await thing.callv(method, args)
 
 	# If we get here then it's probably a C# method with a Task return type
+	if thing is Script:
+		thing = thing.new()
 	var dotnet_dialogue_manager = _get_dotnet_dialogue_manager()
 	dotnet_dialogue_manager.ResolveThingMethod(thing, method, args)
 	return await dotnet_dialogue_manager.Resolved
